@@ -1,24 +1,29 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+
+import ListItem from './components/ListItem';
+import Toolbar from './components/Toolbar';
+
+const styles = {
+  root: {
+    fontFamily: "Roboto"
+  },
+  body: {
+    flex: 1,
+    padding: '20px 40px',
+  },
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Tiff
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={styles.root}>
+      <Toolbar />
+      <div style={styles.body}>
+        <ListItem
+          imageUrl
+          name="name"
+        />
+      </div>
     </div>
   );
 }
