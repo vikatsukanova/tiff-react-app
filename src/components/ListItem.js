@@ -12,19 +12,18 @@ const styles = {
 		width: 200,
 		overflow: 'hidden',
 		marginBottom: 10,
+		cursor: 'pointer',
 	},
 	image: {
 		height: '100%',
 	}
 }
 
-const imageUrl = 'https://image.tmdb.org/t/p/w500'
-
 export default function ListItem(props) {
 	return (
-		<div style={styles.listItem}>
+		<div style={styles.listItem} onClick={props.onClick}>
 	        <div style={styles.listItemContent}>
-	        	<img style={styles.image} src={imageUrl+props.imageUrl} alt={''}/>
+	        	<img style={styles.image} src={props.imageUrl} alt={''}/>
 	        </div>
 	        <Typography variant="body">{props.name}</Typography>
         </div>
