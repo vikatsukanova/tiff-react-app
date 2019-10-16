@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import _ from 'lodash';
+
+import { imageUrl, APIKEY } from './constants';
 
 import ListItem from './components/ListItem';
 import Toolbar from './components/Toolbar';
 import Modal from './components/Modal';
 
-const APIKEY = process.env.REACT_APP_API_KEY;
-
 const styles = {
   root: {
-    fontFamily: "Roboto"
+    fontFamily: "Roboto",
   },
   body: {
     flex: 1,
     padding: '20px 40px',
+    background: 'black',
   },
   content: {
     display: 'flex',
@@ -24,8 +26,6 @@ const styles = {
   },
 }
 
-const imageUrl = 'https://image.tmdb.org/t/p/w500';
-
 function App() {
   const [data, setData] = useState();
   const [modalIsOpen, setOpenModal] = useState(false);
@@ -33,15 +33,13 @@ function App() {
 
   useEffect(() => {
     const fetchData = async() => {
-      const results = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${APIKEY}&language=en-US&sort_by=release_date.desc&primary_release_year=2019&vote_count.gte=10`);
-      setData(results.data.results);
-      console.log(results.data.results)
+      const { data } = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${APIKEY}&sort_by=release_date.desc&primary_release_year=2019&vote_count.gte=10`);
+      setData(_.filter(data.results, movie => movie.popularity > 10));
     };
     fetchData();
   }, []);
 
   const openModal = (id) => {
-    console.log('click');
     setOpenModal(true);
     setSelectedMovie(id);
   }
@@ -55,7 +53,7 @@ function App() {
       <Toolbar />
       <div style={styles.body}>
         <div style={styles.content}>
-          {data && data.map(movie => {
+          {data && _.map(data, movie => {
             const { id, title, poster_path, overview, genre_ids, backdrop_path } = movie;
             const movieImg = backdrop_path ? backdrop_path : poster_path;
             
@@ -73,7 +71,7 @@ function App() {
                     imageUrl={imageUrl + movieImg}
                     title={title}
                     details={overview}
-                    genres={genre_ids}
+                    movieId={id}
                   />
                 }
               </div>

@@ -16,6 +16,9 @@ const styles = {
 	},
 	image: {
 		height: '100%',
+	},
+	hoverCover: {
+		position: 'absolute',
 	}
 }
 
