@@ -20,6 +20,7 @@ const styles = {
     flex: 1,
     padding: '20px 40px',
     background: 'black',
+    marginTop: 80,
   },
   loader: {
     flex: 1,
@@ -66,16 +67,17 @@ function App() {
           <div style={styles.body}>
             <div style={styles.content}>
                 {_.map(data, movie => {
-                    const { id, title, poster_path, overview, genre_ids, backdrop_path } = movie;
+                    const { id, title, poster_path, overview, backdrop_path } = movie;
                     const movieImg = backdrop_path ? backdrop_path : poster_path;
                     
                     return (
-                      <div style={styles.movie}>
+                      <div key={id} style={styles.movie}>
                         <ListItem
                           key={id} 
                           name={title}
                           imageUrl={imageUrl+poster_path}
                           onClick={()=> openModal(id)}
+                          title={title}
                         />
                         {modalIsOpen && selectedMovie === id && 
                           <Modal

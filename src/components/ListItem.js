@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import Typography from './Typography';
 
@@ -22,12 +23,19 @@ const styles = {
 	}
 }
 
+const ListItemContent = styled.div`
+	border: 6px solid black;
+	&:hover {
+	    border: 6px solid orange;
+	}
+`
+
 export default function ListItem(props) {
 	return (
 		<div style={styles.listItem} onClick={props.onClick}>
-	        <div style={styles.listItemContent}>
-	        	<img style={styles.image} src={props.imageUrl} alt={''}/>
-	        </div>
+	        <ListItemContent style={styles.listItemContent}>
+	        	<img style={styles.image} src={props.imageUrl} alt={props.title}/>
+	        </ListItemContent>
 	        <Typography variant="body">{props.name}</Typography>
         </div>
 	)

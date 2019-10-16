@@ -77,7 +77,9 @@ export default function Modal(props) {
         {data ? (
           <React.Fragment>
             <img style={styles.closeIcon} src="close-icon.png" onClick={props.closeModal} />
-            <div style={styles.imageContainer}><img style={styles.image} src={props.imageUrl} alt={''}/></div>
+            <div style={styles.imageContainer}>
+              <img style={styles.image} src={props.imageUrl} alt={props.title}/>
+            </div>
             <Typography variant="body">{props.title}</Typography>
             <p>{data.tagline}</p>
             <div style={styles.modalContent}>
@@ -85,7 +87,7 @@ export default function Modal(props) {
               <p>Runtime: {data.runtime}</p>
               <div style={styles.genres}>
                 {_.map(data.genres, genre => (
-                  <div style={styles.pill}>{genre.name}</div>
+                  <div key={genre.id} id={data.id} style={styles.pill}>{genre.name}</div>
                 ))}
               </div>
             </div>
