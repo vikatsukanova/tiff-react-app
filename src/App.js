@@ -7,19 +7,30 @@ import { imageUrl, APIKEY } from './constants';
 import ListItem from './components/ListItem';
 import Toolbar from './components/Toolbar';
 import Modal from './components/Modal';
+import Loader from './components/Loader';
 
 const styles = {
   root: {
     fontFamily: "Roboto",
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
   },
   body: {
     flex: 1,
     padding: '20px 40px',
     background: 'black',
   },
+  loader: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   content: {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'center'
   },
   movie: {
     display: 'flex'
@@ -51,33 +62,40 @@ function App() {
   return (
     <div style={styles.root}>
       <Toolbar />
-      <div style={styles.body}>
-        <div style={styles.content}>
-          {data && _.map(data, movie => {
-            const { id, title, poster_path, overview, genre_ids, backdrop_path } = movie;
-            const movieImg = backdrop_path ? backdrop_path : poster_path;
-            
-            return (
-              <div style={styles.movie}>
-                <ListItem
-                  key={id} 
-                  name={title}
-                  imageUrl={imageUrl+poster_path}
-                  onClick={()=> openModal(id)}
-                />
-                {modalIsOpen && selectedMovie === id && 
-                  <Modal
-                    closeModal={closeModal}
-                    imageUrl={imageUrl + movieImg}
-                    title={title}
-                    details={overview}
-                    movieId={id}
-                  />
-                }
-              </div>
-          )})}
-        </div>
-      </div>
+        {data ? (
+          <div style={styles.body}>
+            <div style={styles.content}>
+                {_.map(data, movie => {
+                    const { id, title, poster_path, overview, genre_ids, backdrop_path } = movie;
+                    const movieImg = backdrop_path ? backdrop_path : poster_path;
+                    
+                    return (
+                      <div style={styles.movie}>
+                        <ListItem
+                          key={id} 
+                          name={title}
+                          imageUrl={imageUrl+poster_path}
+                          onClick={()=> openModal(id)}
+                        />
+                        {modalIsOpen && selectedMovie === id && 
+                          <Modal
+                            closeModal={closeModal}
+                            imageUrl={imageUrl + movieImg}
+                            title={title}
+                            details={overview}
+                            movieId={id}
+                          />
+                        }
+                      </div>
+                    )
+                  })}
+            </div>
+          </div>    
+          ) : (
+            <div style={styles.loader}>
+              <Loader />
+            </div>
+          )}
     </div>
   );
 }

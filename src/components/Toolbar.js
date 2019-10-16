@@ -2,13 +2,12 @@ import React from 'react';
 
 const styles = {
 	toolbar: {
-	    height: 60,
 	    display: 'flex',
 	    padding: '15px 25px',
 	},
 	logo: {
 	    alignSelf: 'center',
-	    height: '75%',
+	    height: 45,
 	},
 }
 

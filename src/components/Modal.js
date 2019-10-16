@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { APIKEY } from '../constants';
 
 import Typography from './Typography';
+import Loader from './Loader';
 
 const styles = {
   modal: {
@@ -17,7 +18,8 @@ const styles = {
     margin: '3% 20%',
     padding: 20,
     borderRadius: 2,
-    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+    overflow: 'auto',
   },
   imageContainer: {
     height: 280,
@@ -34,6 +36,7 @@ const styles = {
     right: 0,
     top: 0,
     padding: 10,
+    height: 20,
   },
   details: {
     maxHeight: 95,
@@ -49,6 +52,12 @@ const styles = {
     padding: 5,
     margin: '0px 5px',
     color: 'orange',
+  },
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
   }
 }
 
@@ -59,31 +68,35 @@ export default function Modal(props) {
     const fetchData = async() => {
       const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${props.movieId}?api_key=${APIKEY}`);
       setData(data)
-      console.log(data)
     };
     fetchData();
   }, []);
 
   return (
-      data ? (
-        <div style={styles.modal}>
-          <div style={styles.closeIcon} onClick={props.closeModal}>X</div>
-          <div style={styles.imageContainer}><img style={styles.image} src={props.imageUrl} alt={''}/></div>
-          <Typography variant="body">{props.title}</Typography>
-          <p>{data.tagline}</p>
-          <div style={styles.modalContent}>
-            <div style={styles.details}>{props.details}</div>
-            <p>Runtime: {data.runtime}</p>
-            <div style={styles.genres}>
-              {_.map(data.genres, genre => (
-                <div style={styles.pill}>{genre.name}</div>
-              ))}
+      <div style={styles.modal}>
+        {data ? (
+          <React.Fragment>
+            <img style={styles.closeIcon} src="close-icon.png" onClick={props.closeModal} />
+            <div style={styles.imageContainer}><img style={styles.image} src={props.imageUrl} alt={''}/></div>
+            <Typography variant="body">{props.title}</Typography>
+            <p>{data.tagline}</p>
+            <div style={styles.modalContent}>
+              <div style={styles.details}>{props.details}</div>
+              <p>Runtime: {data.runtime}</p>
+              <div style={styles.genres}>
+                {_.map(data.genres, genre => (
+                  <div style={styles.pill}>{genre.name}</div>
+                ))}
+              </div>
             </div>
+          </React.Fragment>
+        ) : (
+          <div style={styles.loader}>
+            <Loader />
           </div>
-        </div>
-      ) : (
-        <p>loading</p>
-      )
+        )}
+      </div>
   );
 }
+
 
